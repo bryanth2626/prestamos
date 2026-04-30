@@ -1,0 +1,156 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Proveedores</h1>
+    <p class="page-subtitle">Gestiona los proveedores de herramientas</p>
+  </div>
+  <button class="btn-primary-action" id="btnNuevoProveedor">
+    <i class="bi bi-plus-lg"></i> Nuevo Proveedor
+  </button>
+</div>
+
+<div class="search-bar-row">
+  <div class="search-input-wrap">
+    <i class="bi bi-search search-icon"></i>
+    <input type="text" id="searchProveedor" class="search-input" placeholder="Buscar por nombre, contacto o teléfono…" />
+  </div>
+  <button class="btn-icon-outline" id="btnRefreshProveedores" title="Recargar">
+    <i class="bi bi-arrow-clockwise"></i>
+  </button>
+</div>
+
+<div class="card-panel">
+  <div class="table-responsive">
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre Comercial</th>
+          <th>Contacto</th>
+          <th>Teléfono</th>
+          <th>Email</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="bodyProveedores">
+        <tr><td colspan="6" class="text-center py-5"><div class="spinner-custom mx-auto"></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-footer">
+    <span class="text-muted text-sm" id="totalProveedoresLabel">Cargando…</span>
+  </div>
+</div>
+<div class="modal-overlay" id="modalProveedor">
+      <div class="modal-panel modal-md">
+        <div class="modal-header-custom">
+          <div>
+            <div class="modal-title-custom" id="modalProveedorTitulo">
+              <i class="bi bi-truck me-2"></i> Nuevo Proveedor
+            </div>
+            <div class="modal-subtitle">Gestiona la información comercial del proveedor</div>
+          </div>
+          <button class="btn-modal-close" onclick="closeOverlay('modalProveedor')">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+        <div class="modal-body-custom">
+          <div class="row g-3">
+            
+            <!-- Nombre Comercial -->
+            <div class="col-12">
+              <label class="form-label-custom">
+                Nombre comercial <span class="required">*</span>
+              </label>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix"><i class="bi bi-building"></i></span>
+                <input 
+                  type="text" 
+                  id="provNombre" 
+                  class="input-custom input-with-prefix" 
+                  placeholder="Ej: Ferretería Central SAC"
+                  maxlength="150"
+                />
+              </div>
+              <div class="field-error" id="err-provNombre"></div>
+            </div>
+
+            <!-- Contacto -->
+            <div class="col-md-6">
+              <label class="form-label-custom">Persona de contacto</label>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix"><i class="bi bi-person"></i></span>
+                <input 
+                  type="text" 
+                  id="provContacto" 
+                  class="input-custom input-with-prefix" 
+                  placeholder="Nombre del encargado"
+                  maxlength="100"
+                />
+              </div>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="col-md-6">
+              <label class="form-label-custom">Teléfono</label>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix"><i class="bi bi-telephone"></i></span>
+                <input 
+                  type="text" 
+                  id="provTelefono" 
+                  class="input-custom input-with-prefix" 
+                  placeholder="987654321"
+                  maxlength="20"
+                />
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="col-12">
+              <label class="form-label-custom">Correo electrónico</label>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix"><i class="bi bi-envelope"></i></span>
+                <input 
+                  type="email" 
+                  id="provEmail" 
+                  class="input-custom input-with-prefix" 
+                  placeholder="proveedor@empresa.com"
+                  maxlength="100"
+                />
+              </div>
+            </div>
+
+            <!-- Dirección -->
+            <div class="col-12">
+              <label class="form-label-custom">Dirección comercial</label>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix" style="top:18px;"><i class="bi bi-geo-alt"></i></span>
+                <textarea 
+                  id="provDireccion" 
+                  class="input-custom input-with-prefix" 
+                  rows="3" 
+                  placeholder="Av. Industrial 123, Lima..."
+                  style="padding-top: 12px;"
+                ></textarea>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer-custom">
+          <button class="btn-cancel" onclick="closeOverlay('modalProveedor')">
+            Cancelar
+          </button>
+
+          <button class="btn-save" id="btnGuardarProveedor" onclick="ProveedoresModule.guardar()">
+            <span id="btnGuardarProveedorText">
+              <i class="bi bi-floppy-fill me-1"></i> Guardar Proveedor
+            </span>
+            <span id="btnGuardarProveedorSpinner" class="d-none">
+              <span class="spinner-sm"></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>

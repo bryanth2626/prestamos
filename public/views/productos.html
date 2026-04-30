@@ -1,0 +1,108 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Productos</h1>
+    <p class="page-subtitle">Administra tu catálogo de productos</p>
+  </div>
+  <button class="btn-primary-action" id="btnNuevoProducto">
+    <i class="bi bi-plus-lg"></i> Nuevo Producto
+  </button>
+</div>
+
+<div class="search-bar-row">
+  <div class="search-input-wrap">
+    <i class="bi bi-search search-icon"></i>
+    <input type="text" id="searchProducto" class="search-input" placeholder="Buscar por nombre, marca, descripción…" />
+  </div>
+  <select id="filterMarca" class="filter-select">
+    <option value="">Todas las marcas</option>
+  </select>
+  <button class="btn-icon-outline" id="btnRefreshProductos" title="Recargar">
+    <i class="bi bi-arrow-clockwise"></i>
+  </button>
+</div>
+
+<div class="card-panel">
+  <div class="table-responsive">
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Producto</th>
+          <th>Marca</th>
+          <th>Precio</th>
+          <th>Garantía</th>
+          <th>Fecha Compra</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="bodyProductos">
+        <tr><td colspan="7" class="text-center py-5"><div class="spinner-custom"></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-footer">
+    <span class="text-muted text-sm" id="totalProductosLabel">Cargando…</span>
+  </div>
+</div>
+
+<!-- ══ MODAL PRODUCTO (local a esta vista) ══ -->
+<div class="modal-overlay" id="modalProductoOverlay">
+  <div class="modal-panel">
+    <div class="modal-header-custom">
+      <div>
+        <div class="modal-title-custom" id="modalProductoTitle">Nuevo Producto</div>
+        <div class="modal-subtitle"    id="modalProductoSubtitle">Completa los campos del formulario</div>
+      </div>
+      <button class="btn-modal-close" id="btnCloseModalProducto"><i class="bi bi-x-lg"></i></button>
+    </div>
+
+    <div class="modal-body-custom">
+      <form id="formProducto" novalidate>
+        <input type="hidden" id="productoId" />
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label-custom">Nombre del Producto <span class="required">*</span></label>
+            <input type="text" id="pNombre" class="input-custom" placeholder="Ej: MacBook Pro M3" maxlength="150" required />
+            <div class="field-error" id="err-pNombre"></div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label-custom">Marca <span class="required">*</span></label>
+            <select id="pMarca" class="input-custom" required>
+              <option value="">— Seleccionar marca —</option>
+            </select>
+            <div class="field-error" id="err-pMarca"></div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label-custom">Precio (S/.) <span class="required">*</span></label>
+            <div class="input-prefix-wrap">
+              <span class="input-prefix">S/.</span>
+              <input type="number" id="pPrecio" class="input-custom input-with-prefix" placeholder="0.00" min="0.01" step="0.01" required />
+            </div>
+            <div class="field-error" id="err-pPrecio"></div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label-custom">Garantía (meses)</label>
+            <input type="number" id="pGarantia" class="input-custom" placeholder="Ej: 12" min="0" max="120" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label-custom">Fecha de Compra</label>
+            <input type="date" id="pFechaCompra" class="input-custom" />
+          </div>
+          <div class="col-12">
+            <label class="form-label-custom">Descripción</label>
+            <textarea id="pDescripcion" class="input-custom" rows="3" placeholder="Describe las características del producto…" maxlength="1000"></textarea>
+            <div class="char-counter"><span id="charCount">0</span>/1000</div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer-custom">
+      <button class="btn-cancel" id="btnCancelProducto">Cancelar</button>
+      <button class="btn-save"   id="btnSaveProducto">
+        <span id="btnSaveText"><i class="bi bi-check-lg me-1"></i> Guardar</span>
+        <span id="btnSaveSpinner" class="d-none"><div class="spinner-sm"></div></span>
+      </button>
+    </div>
+  </div>
+</div>

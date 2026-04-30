@@ -1,0 +1,180 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Préstamos</h1>
+    <p class="page-subtitle">Control de préstamos de herramientas a clientes</p>
+  </div>
+  <button class="btn-primary-action" id="btnNuevoPrestamo">
+    <i class="bi bi-plus-lg"></i> Nuevo Préstamo
+  </button>
+</div>
+
+<div class="search-bar-row">
+  <div class="search-input-wrap">
+    <i class="bi bi-search search-icon"></i>
+    <input type="text" id="searchPrestamo" class="search-input" placeholder="Buscar por cliente o DNI…" />
+  </div>
+  <select id="filterEstadoPrestamo" class="filter-select">
+    <option value="">Todos los estados</option>
+    <option value="activo">Activo</option>
+    <option value="devuelto">Devuelto</option>
+    <option value="vencido">Vencido</option>
+  </select>
+  <button class="btn-icon-outline" id="btnRefreshPrestamos" title="Recargar">
+    <i class="bi bi-arrow-clockwise"></i>
+  </button>
+</div>
+
+<div class="card-panel">
+  <div class="table-responsive">
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Cliente</th>
+          <th>Fecha Préstamo</th>
+          <th>Devolución Esperada</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="bodyPrestamos">
+        <tr><td colspan="6" class="text-center py-5"><div class="spinner-custom mx-auto"></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-footer">
+    <span class="text-muted text-sm" id="totalPrestamosLabel">Cargando…</span>
+  </div>
+</div>
+<!-- Modal Nuevo Préstamo -->
+      <div class="modal-overlay" id="modalPrestamo">
+        <div class="modal-panel" style="max-width:600px">
+          <div class="modal-header-custom">
+            <div>
+              <div class="modal-title-custom" id="modalPrestamoTitulo">Nuevo Préstamo</div>
+              <div class="modal-subtitle">Selecciona cliente y herramientas a prestar</div>
+            </div>
+            <button class="btn-modal-close" onclick="closeOverlay('modalPrestamo')"><i class="bi bi-x-lg"></i></button>
+          </div>
+          <div class="modal-body-custom">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label-custom">Cliente <span class="required">*</span></label>
+                <select id="presCliente" class="input-custom">
+                  <option value="">Seleccionar cliente…</option>
+                </select>
+                <div class="field-error" id="err-presCliente"></div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Fecha de préstamo <span class="required">*</span></label>
+                <input type="date" id="presFechaPrestamo" class="input-custom"/>
+                <div class="field-error" id="err-presFecha"></div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Fecha devolución esperada <span class="required">*</span></label>
+                <input type="date" id="presFechaDevolucion" class="input-custom"/>
+                <div class="field-error" id="err-presFechaDevolucion"></div>
+              </div>
+              <div class="col-12">
+                <label class="form-label-custom">Observaciones</label>
+                <textarea id="presObservaciones" class="input-custom" rows="2" placeholder="Notas adicionales…"></textarea>
+              </div>
+            </div>
+
+            <hr style="margin:16px 0; border-color:var(--border)"/>
+            <p class="form-label-custom mb-2">Agregar herramientas</p>
+            <div class="row g-2 align-items-end">
+              <div class="col-md-5">
+                <label class="form-label-custom">Herramienta</label>
+                <select id="presHerramientaSelect" class="input-custom">
+                  <option value="">Seleccionar…</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label class="form-label-custom">Cantidad</label>
+                <input type="number" id="presCantidad" class="input-custom" value="1" min="1"/>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label-custom">Estado entrega</label>
+                <select id="presEstadoEntrega" class="input-custom">
+                  <option value="nuevo">Nuevo</option>
+                  <option value="bueno" selected>Bueno</option>
+                  <option value="regular">Regular</option>
+                  <option value="dañado">Dañado</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <button id="btnAgregarHerramienta" class="btn-primary-action w-100">
+                  <i class="bi bi-plus-lg"></i>
+                </button>
+              </div>
+              <div class="col-12">
+                <input type="text" id="presObsEntrega" class="input-custom" placeholder="Obs. de entrega (opcional)"/>
+              </div>
+            </div>
+
+            <div id="listaHerramientasPrestamo" class="mt-3 lista-items-prestamo">
+              <p class="text-muted text-sm text-center py-2">Sin herramientas agregadas</p>
+            </div>
+            <div class="field-error" id="err-presHerramientas"></div>
+          </div>
+          <div class="modal-footer-custom">
+            <button class="btn-cancel" onclick="closeOverlay('modalPrestamo')">Cancelar</button>
+            <button class="btn-save" id="btnGuardarPrestamo" onclick="PrestamosModule.guardar()">
+              <span id="btnGuardarPrestamoText"><i class="bi bi-floppy-fill me-1"></i> Guardar</span>
+              <span id="btnGuardarPrestamoSpinner" class="d-none"><span class="spinner-sm"></span></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Editar Estado -->
+      <div class="modal-overlay" id="modalEditarPrestamo">
+        <div class="modal-panel modal-sm">
+          <div class="modal-header-custom">
+            <div class="modal-title-custom">Actualizar Préstamo</div>
+            <button class="btn-modal-close" onclick="closeOverlay('modalEditarPrestamo')"><i class="bi bi-x-lg"></i></button>
+          </div>
+          <div class="modal-body-custom">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label-custom">Estado</label>
+                <select id="editPresEstado" class="input-custom">
+                  <option value="activo">Activo</option>
+                  <option value="devuelto">Devuelto</option>
+                  <option value="vencido">Vencido</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label-custom">Fecha de cierre</label>
+                <input type="date" id="editPresFechaCierre" class="input-custom"/>
+              </div>
+              <div class="col-12">
+                <label class="form-label-custom">Observaciones</label>
+                <textarea id="editPresObservaciones" class="input-custom" rows="2"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer-custom">
+            <button class="btn-cancel" onclick="closeOverlay('modalEditarPrestamo')">Cancelar</button>
+            <button class="btn-save" id="btnGuardarEditPrestamo" onclick="PrestamosModule.guardarEdicion()">
+              <span id="btnGuardarEditPrestamoText"><i class="bi bi-floppy-fill me-1"></i> Guardar</span>
+              <span id="btnGuardarEditPrestamoSpinner" class="d-none"><span class="spinner-sm"></span></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Ver Detalle -->
+      <div class="modal-overlay" id="modalDetallePrestamo">
+        <div class="modal-panel">
+          <div class="modal-header-custom">
+            <div class="modal-title-custom">Detalle del Préstamo</div>
+            <button class="btn-modal-close" onclick="closeOverlay('modalDetallePrestamo')"><i class="bi bi-x-lg"></i></button>
+          </div>
+          <div class="modal-body-custom" id="detallePrestamoBody"></div>
+          <div class="modal-footer-custom">
+            <button class="btn-cancel" onclick="closeOverlay('modalDetallePrestamo')">Cerrar</button>
+          </div>
+        </div>
+      </div>

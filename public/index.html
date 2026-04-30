@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Préstamos — Panel de Gestión</title>
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <!-- Bootstrap Grid (solo grid y utils) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap-grid.min.css"/>
+
+  <!-- Estilos propios -->
+  <link rel="stylesheet" href="/css/style.css"/>
+  <link rel="stylesheet" href="/css/extra.css"/>
+</head>
+<body>
+
+<!-- ── SIDEBAR ───────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon"><i class="bi bi-box-seam-fill"></i></div>
+    <div>
+      <div class="brand-name">Préstamos</div>
+      <div class="brand-sub">Panel de gestión</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+
+    <div class="nav-item" data-page="dashboard">
+      <i class="bi bi-grid-fill"></i>
+      <span>Dashboard</span>
+    </div>
+
+    <div class="nav-item" data-page="proveedores">
+      <i class="bi bi-truck"></i>
+      <span>Proveedores</span>
+      <span class="nav-badge" id="badge-proveedores">0</span>
+    </div>
+
+    <div class="nav-item" data-page="herramientas">
+      <i class="bi bi-tools"></i>
+      <span>Herramientas</span>
+      <span class="nav-badge" id="badge-herramientas">0</span>
+    </div>
+
+    <div class="nav-section-label mt-3">Operaciones</div>
+
+    <div class="nav-item" data-page="clientes">
+      <i class="bi bi-people-fill"></i>
+      <span>Clientes</span>
+      <span class="nav-badge" id="badge-clientes">0</span>
+    </div>
+
+    <div class="nav-item" data-page="prestamo">
+      <i class="bi bi-box-arrow-right"></i>
+      <span>Préstamos</span>
+      <span class="nav-badge" id="badge-prestamos">0</span>
+    </div>
+
+    <div class="nav-item" data-page="devoluciones">
+      <i class="bi bi-box-arrow-in-left"></i>
+      <span>Devoluciones</span>
+      <span class="nav-badge" id="badge-devoluciones">0</span>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="d-flex align-items-center gap-2">
+      <div class="avatar-xs"><i class="bi bi-person-fill"></i></div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:white">Administrador</div>
+        <div style="font-size:11px;color:var(--sidebar-text)">Sistema de Préstamos</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Overlay móvil -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ── MAIN ──────────────────────────────────── -->
+<main class="main-content">
+  <header class="topbar">
+    <button class="btn-toggle-sidebar" id="btnToggleSidebar">
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="topbar-title" id="topbarTitle">Dashboard</div>
+    <div class="topbar-actions">
+      <div class="status-dot" title="Conectado"></div>
+      <span class="text-sm text-muted ms-1">Conectado</span>
+    </div>
+  </header>
+
+  <div class="page-wrapper">
+    <div id="pageContainer">
+      <!-- Las vistas se inyectan aquí por el Router -->
+    </div>
+  </div>
+</main>
+
+<!-- ── MODALES (se inyectan por los módulos) ─── -->
+<div id="modalsContainer"></div>
+
+<!-- ── TOASTS ─────────────────────────────────── -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ── SCRIPTS ────────────────────────────────── -->
+<!-- Utilidades primero -->
+<script src="/js/utils.js"></script>
+<!-- Módulos -->
+<script src="/js/modules/dashboard.js"></script>
+<script src="/js/modules/proveedores.js"></script>
+<script src="/js/modules/herramientas.js"></script>
+<script src="/js/modules/clientes.js"></script>
+<script src="/js/modules/prestamos.js"></script>
+<script src="/js/modules/devoluciones.js"></script>
+<!-- Router y App (al final) -->
+<script src="/js/router.js"></script>
+<script src="/js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Devoluciones</h1>
+    <p class="page-subtitle">Registro y control de retorno de herramientas</p>
+  </div>
+  <button class="btn-primary-action" id="btnNuevaDevolucion">
+    <i class="bi bi-plus-lg"></i> Registrar Devolución
+  </button>
+</div>
+
+<div class="search-bar-row">
+  <div class="search-input-wrap">
+    <i class="bi bi-search search-icon"></i>
+    <input type="text" id="searchDevolucion" class="search-input" placeholder="Buscar por cliente o herramienta…" />
+  </div>
+  <select id="filterEstadoDevolucion" class="filter-select">
+    <option value="">Todos los estados</option>
+    <option value="igual">Igual</option>
+    <option value="bueno">Bueno</option>
+    <option value="regular">Regular</option>
+    <option value="dañado">Dañado</option>
+    <option value="perdido">Perdido</option>
+  </select>
+  <button class="btn-icon-outline" id="btnRefreshDevoluciones" title="Recargar">
+    <i class="bi bi-arrow-clockwise"></i>
+  </button>
+</div>
+
+<div class="card-panel">
+  <div class="table-responsive">
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Cliente</th>
+          <th>Herramienta</th>
+          <th>Fecha Devolución</th>
+          <th>Estado Retorno</th>
+          <th>Penalidad</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="bodyDevoluciones">
+        <tr><td colspan="7" class="text-center py-5"><div class="spinner-custom mx-auto"></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-footer">
+    <span class="text-muted text-sm" id="totalDevolucionesLabel">Cargando…</span>
+  </div>
+</div>
+
+<!-- Modal Nueva Devolución -->
+<div class="modal-overlay" id="modalDevolucion">
+  <div class="modal-panel modal-md">
+    <div class="modal-header-custom">
+      <div>
+        <div class="modal-title-custom" id="modalDevolucionTitulo">Registrar Devolución</div>
+        <div class="modal-subtitle">Indica el estado de retorno de la herramienta</div>
+      </div>
+      <button class="btn-modal-close" onclick="closeOverlay('modalDevolucion')"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="modal-body-custom">
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label-custom">Préstamo activo <span class="required">*</span></label>
+          <select id="devPrestamo" class="input-custom" onchange="DevolucionesModule._onSeleccionarPrestamo()">
+            <option value="">Seleccionar préstamo…</option>
+          </select>
+          <div class="field-error" id="err-devPrestamo"></div>
+        </div>
+        <div class="col-12">
+          <label class="form-label-custom">Herramienta del préstamo <span class="required">*</span></label>
+          <select id="devDetallePrestamo" class="input-custom">
+            <option value="">Seleccionar herramienta…</option>
+          </select>
+          <div class="field-error" id="err-devDetalle"></div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label-custom">Fecha de devolución real <span class="required">*</span></label>
+          <input type="date" id="devFecha" class="input-custom"/>
+          <div class="field-error" id="err-devFecha"></div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label-custom">Estado de retorno</label>
+          <select id="devEstadoRetorno" class="input-custom">
+            <option value="igual">Igual</option>
+            <option value="bueno">Bueno</option>
+            <option value="regular">Regular</option>
+            <option value="dañado">Dañado</option>
+            <option value="perdido">Perdido</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <label class="form-label-custom">Penalidad (S/)</label>
+          <div class="input-prefix-wrap">
+            <span class="input-prefix">S/</span>
+            <input type="number" id="devPenalidad" class="input-custom input-with-prefix" value="0" min="0" step="0.01"/>
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="form-label-custom">Observaciones</label>
+          <textarea id="devObservaciones" class="input-custom" rows="2" placeholder="Descripción del estado, daños encontrados…"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer-custom">
+      <button class="btn-cancel" onclick="closeOverlay('modalDevolucion')">Cancelar</button>
+      <button class="btn-save" id="btnGuardarDevolucion" onclick="DevolucionesModule.guardar()">
+        <span id="btnGuardarDevolucionText"><i class="bi bi-floppy-fill me-1"></i> Registrar</span>
+        <span id="btnGuardarDevolucionSpinner" class="d-none"><span class="spinner-sm"></span></span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Clientes</h1>
+    <p class="page-subtitle">Gestiona los clientes del sistema</p>
+  </div>
+  <button class="btn-primary-action" id="btnNuevoCliente">
+    <i class="bi bi-plus-lg"></i> Nuevo Cliente
+  </button>
+</div>
+
+<div class="search-bar-row">
+  <div class="search-input-wrap">
+    <i class="bi bi-search search-icon"></i>
+    <input type="text" id="searchCliente" class="search-input" placeholder="Buscar por nombre, DNI o teléfono…" />
+  </div>
+  <button class="btn-icon-outline" id="btnRefreshClientes" title="Recargar">
+    <i class="bi bi-arrow-clockwise"></i>
+  </button>
+</div>
+
+<div class="card-panel">
+  <div class="table-responsive">
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>DNI</th>
+          <th>Teléfono</th>
+          <th>Email</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="bodyClientes">
+        <tr><td colspan="6" class="text-center py-5"><div class="spinner-custom mx-auto"></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-footer">
+    <span class="text-muted text-sm" id="totalClientesLabel">Cargando…</span>
+  </div>
+</div>

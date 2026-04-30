@@ -1,0 +1,89 @@
+/* ══════════════════════════════════════════════
+   ESTILOS ADICIONALES — Módulos de Préstamos
+══════════════════════════════════════════════ */
+
+/* ── Badges de Estado ─────────────────────── */
+.badge-estado {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.badge-estado-disp {
+  background: rgba(16, 185, 129, .12);
+  color: #059669;
+}
+
+.badge-estado-pres {
+  background: rgba(99, 102, 241, .12);
+  color: #4f46e5;
+}
+
+.badge-estado-mant {
+  background: rgba(245, 158, 11, .12);
+  color: #b45309;
+}
+
+.badge-estado-baja {
+  background: rgba(239, 68, 68, .12);
+  color: #dc2626;
+}
+
+.badge-estado-dev {
+  background: rgba(16, 185, 129, .12);
+  color: #059669;
+}
+
+/* ── Lista de herramientas en préstamo ─────── */
+.lista-items-prestamo {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  min-height: 60px;
+  padding: 8px;
+  background: var(--surface-2);
+}
+
+.item-prestamo-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  margin-bottom: 6px;
+  animation: fadeIn .2s ease;
+}
+
+.item-prestamo-row:last-child { margin-bottom: 0; }
+.item-prestamo-row .flex-1 { flex: 1; }
+
+/* ── Dashboard grid 8 stats ───────────────── */
+@media (max-width: 1024px) {
+  .stats-grid[style*="repeat(4"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid[style*="repeat(4"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ── Textos helpers ───────────────────────── */
+.text-danger { color: var(--danger) !important; }
+.text-center { text-align: center; }
+.ms-2 { margin-left: 8px; }
+.py-2 { padding-top: 8px; padding-bottom: 8px; }
+.py-4 { padding-top: 24px; padding-bottom: 24px; }
+.mb-1 { margin-bottom: 4px; }
+.mb-2 { margin-bottom: 8px; }
+.mx-auto { margin-left: auto; margin-right: auto; display: block; }
+.w-100 { width: 100%; }
+.mt-3 { margin-top: 16px; }
+.d-none { display: none !important; }

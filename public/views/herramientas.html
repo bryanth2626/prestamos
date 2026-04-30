@@ -1,0 +1,239 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Herramientas</h1>
+    <p class="page-subtitle">Inventario de herramientas disponibles</p>
+  </div>
+  <button class="btn-primary-action" id="btnNuevaHerramienta">
+    <i class="bi bi-plus-lg"></i> Nueva Herramienta
+  </button>
+</div>
+
+<div class="search-bar-row">
+  <div class="search-input-wrap">
+    <i class="bi bi-search search-icon"></i>
+    <input type="text" id="searchHerramienta" class="search-input" placeholder="Buscar por nombre, código o marca…" />
+  </div>
+  <select id="filterEstadoHerramienta" class="filter-select">
+    <option value="">Todos los estados</option>
+    <option value="disponible">Disponible</option>
+    <option value="prestada">Prestada</option>
+    <option value="mantenimiento">Mantenimiento</option>
+    <option value="baja">Baja</option>
+  </select>
+  <button class="btn-icon-outline" id="btnRefreshHerramientas" title="Recargar">
+    <i class="bi bi-arrow-clockwise"></i>
+  </button>
+</div>
+
+<div class="card-panel">
+  <div class="table-responsive">
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre / Código</th>
+          <th>Categoría</th>
+          <th>Proveedor</th>
+          <th>Precio Compra</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="bodyHerramientas">
+        <tr><td colspan="7" class="text-center py-5"><div class="spinner-custom mx-auto"></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-footer">
+    <span class="text-muted text-sm" id="totalHerramientasLabel">Cargando…</span>
+  </div>
+</div>
+<!-- MODAL HERRAMIENTA -->
+<div class="modal-overlay" id="modalHerramienta">
+  <div class="modal-panel modal-xl">
+
+    <div class="modal-header-custom">
+      <div>
+        <div class="modal-title-custom" id="modalHerramientaTitulo">
+          <i class="bi bi-tools me-2"></i> Nueva Herramienta
+        </div>
+        <div class="modal-subtitle">
+          Registra y administra información técnica de herramientas
+        </div>
+      </div>
+
+      <button class="btn-modal-close" id="btnCloseModalHerramienta">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="modal-body-custom">
+      <div class="row g-3">
+
+        <input type="hidden" id="herramientaId">
+
+        <!-- Nombre -->
+        <div class="col-12">
+          <label class="form-label-custom">
+            Nombre de herramienta <span class="required">*</span>
+          </label>
+
+          <div class="input-prefix-wrap">
+            <span class="input-prefix">
+              <i class="bi bi-wrench-adjustable"></i>
+            </span>
+
+            <input
+              type="text"
+              id="herrNombre"
+              class="input-custom input-with-prefix"
+              placeholder="Ej: Taladro Percutor 750W"
+              maxlength="150"/>
+          </div>
+
+          <div class="field-error" id="err-herrNombre"></div>
+        </div>
+
+        <!-- Proveedor -->
+        <div class="col-md-6">
+          <label class="form-label-custom">
+            Proveedor <span class="required">*</span>
+          </label>
+
+          <div class="input-prefix-wrap">
+            <span class="input-prefix">
+              <i class="bi bi-truck"></i>
+            </span>
+
+            <select id="herrProveedor" class="input-custom input-with-prefix">
+              <option value="">Seleccionar proveedor…</option>
+            </select>
+          </div>
+
+          <div class="field-error" id="err-herrProveedor"></div>
+        </div>
+
+        <!-- Categoría -->
+        <div class="col-md-6">
+          <label class="form-label-custom">
+            Categoría <span class="required">*</span>
+          </label>
+
+          <div class="input-prefix-wrap">
+            <span class="input-prefix">
+              <i class="bi bi-grid"></i>
+            </span>
+
+            <select id="herrCategoria" class="input-custom input-with-prefix">
+              <option value="">Seleccionar categoría…</option>
+            </select>
+          </div>
+
+          <div class="field-error" id="err-herrCategoria"></div>
+        </div>
+
+        <!-- Marca -->
+        <div class="col-md-6">
+          <label class="form-label-custom">Marca</label>
+          <div class="input-prefix-wrap">
+            <span class="input-prefix"><i class="bi bi-award"></i></span>
+            <input type="text" id="herrMarca" class="input-custom input-with-prefix"/>
+          </div>
+        </div>
+
+        <!-- Modelo -->
+        <div class="col-md-6">
+          <label class="form-label-custom">Modelo</label>
+          <div class="input-prefix-wrap">
+            <span class="input-prefix"><i class="bi bi-box-seam"></i></span>
+            <input type="text" id="herrModelo" class="input-custom input-with-prefix"/>
+          </div>
+        </div>
+
+        <!-- Código -->
+        <div class="col-md-6">
+          <label class="form-label-custom">Código interno</label>
+          <div class="input-prefix-wrap">
+            <span class="input-prefix"><i class="bi bi-upc-scan"></i></span>
+            <input type="text" id="herrCodigo" class="input-custom input-with-prefix"/>
+          </div>
+        </div>
+
+        <!-- Serie -->
+        <div class="col-md-6">
+          <label class="form-label-custom">Número de serie</label>
+          <div class="input-prefix-wrap">
+            <span class="input-prefix"><i class="bi bi-hash"></i></span>
+            <input type="text" id="herrSerie" class="input-custom input-with-prefix"/>
+          </div>
+        </div>
+
+        <!-- Precio -->
+        <div class="col-md-4">
+          <label class="form-label-custom">Precio compra</label>
+          <div class="input-prefix-wrap">
+            <span class="input-prefix">S/</span>
+            <input type="number" id="herrPrecio" class="input-custom input-with-prefix"/>
+          </div>
+        </div>
+
+        <!-- Stock -->
+        <div class="col-md-4">
+          <label class="form-label-custom">Stock</label>
+          <div class="input-prefix-wrap">
+            <span class="input-prefix"><i class="bi bi-boxes"></i></span>
+            <input type="number" id="herrStock" class="input-custom input-with-prefix"/>
+          </div>
+        </div>
+
+        <!-- Estado -->
+        <div class="col-md-4">
+          <label class="form-label-custom">Estado</label>
+          <div class="input-prefix-wrap">
+            <span class="input-prefix"><i class="bi bi-activity"></i></span>
+            <select id="herrEstado" class="input-custom input-with-prefix">
+              <option value="disponible">Disponible</option>
+              <option value="prestada">Prestada</option>
+              <option value="mantenimiento">Mantenimiento</option>
+              <option value="baja">Baja</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="col-12">
+          <label class="form-label-custom">Descripción técnica</label>
+          <div class="input-prefix-wrap">
+            <span class="input-prefix" style="top:18px;">
+              <i class="bi bi-card-text"></i>
+            </span>
+
+            <textarea
+              id="herrDescripcion"
+              class="input-custom input-with-prefix"
+              rows="3"></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="modal-footer-custom">
+      <button class="btn-cancel" id="btnCancelHerramienta">
+        Cancelar
+      </button>
+
+      <button class="btn-save" id="btnGuardarHerramienta">
+        <span id="btnGuardarHerramientaText">
+          <i class="bi bi-floppy-fill me-1"></i>
+          Guardar Herramienta
+        </span>
+
+        <span id="btnGuardarHerramientaSpinner" class="d-none">
+          <span class="spinner-sm"></span>
+        </span>
+      </button>
+    </div>
+
+  </div>
+</div>
