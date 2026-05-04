@@ -5,7 +5,6 @@ const DevolucionesModule = {
   editandoId: null,
 
   async init() {
-    this._renderModal();
     this._bindEvents();
     await this.load();
   },
