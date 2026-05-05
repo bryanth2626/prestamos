@@ -3,6 +3,7 @@
 const ClientesModule = {
   clientes: [],
   editandoId: null,
+  _viendoId: null,
 
   async init() {
     this._renderModal();
@@ -44,8 +45,10 @@ const ClientesModule = {
         <td>${escapeHtml(c.telefono || '—')}</td>
         <td>${escapeHtml(c.email || '—')}</td>
         <td>
+          <button class="btn-action btn-action-view"   onclick="ClientesModule.verDetalle(${c.id})" title="Ver detalle"><i class="bi bi-eye-fill"></i></button>
           <button class="btn-action btn-action-edit"   onclick="ClientesModule.abrirEditar(${c.id})" title="Editar"><i class="bi bi-pencil-fill"></i></button>
           <button class="btn-action btn-action-delete" onclick="ClientesModule.eliminar(${c.id}, '${escapeHtml(c.nombre)}')" title="Eliminar"><i class="bi bi-trash3-fill"></i></button>
+          <button class="btn-action btn-action-chart" onclick="GraficosModule._verGraficoRapido('clientes')" title="Ver gráfico"><i class="bi bi-bar-chart-fill"></i></button>
         </td>
       </tr>`).join('');
   },
@@ -60,8 +63,9 @@ const ClientesModule = {
     this._render(filtrados);
   },
 
-  /* ── MODAL ── */
+  /* ── MODALS ── */
   _renderModal() {
+    // Modal Nuevo / Editar
     document.getElementById('modalsContainer').insertAdjacentHTML('beforeend', `
       <div class="modal-overlay" id="modalCliente">
         <div class="modal-panel">
@@ -111,6 +115,31 @@ const ClientesModule = {
     document.getElementById('modalCliente').addEventListener('click', e => {
       if (e.target.id === 'modalCliente') closeOverlay('modalCliente');
     });
+
+    // Modal Ver Detalle
+    document.getElementById('modalsContainer').insertAdjacentHTML('beforeend', `
+      <div class="modal-overlay" id="modalDetalleCliente">
+        <div class="modal-panel" style="max-width:480px">
+          <div class="modal-header-custom">
+            <div>
+              <div class="modal-title-custom">Detalle del Cliente</div>
+              <div class="modal-subtitle">Información completa del registro</div>
+            </div>
+            <button class="btn-modal-close" onclick="closeOverlay('modalDetalleCliente')"><i class="bi bi-x-lg"></i></button>
+          </div>
+          <div class="modal-body-custom" id="detalleClienteBody"></div>
+          <div class="modal-footer-custom">
+            <button class="btn-cancel" onclick="closeOverlay('modalDetalleCliente')">Cerrar</button>
+            <button class="btn-save" onclick="ClientesModule.abrirEditar(ClientesModule._viendoId); closeOverlay('modalDetalleCliente')">
+              <i class="bi bi-pencil-fill me-1"></i> Editar
+            </button>
+          </div>
+        </div>
+      </div>`);
+
+    document.getElementById('modalDetalleCliente').addEventListener('click', e => {
+      if (e.target.id === 'modalDetalleCliente') closeOverlay('modalDetalleCliente');
+    });
   },
 
   _limpiarModal() {
@@ -143,6 +172,38 @@ const ClientesModule = {
     openOverlay('modalCliente');
   },
 
+  verDetalle(id) {
+    const c = this.clientes.find(x => x.id === id);
+    if (!c) return;
+    this._viendoId = id;
+
+    document.getElementById('detalleClienteBody').innerHTML = `
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label-custom">Nombre completo</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${escapeHtml(c.nombre || '—')}</div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label-custom">DNI</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${escapeHtml(c.dni || '—')}</div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label-custom">Teléfono</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${escapeHtml(c.telefono || '—')}</div>
+        </div>
+        <div class="col-12">
+          <label class="form-label-custom">Email</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${escapeHtml(c.email || '—')}</div>
+        </div>
+        <div class="col-12">
+          <label class="form-label-custom">Dirección</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default;min-height:60px">${escapeHtml(c.direccion || '—')}</div>
+        </div>
+      </div>`;
+
+    openOverlay('modalDetalleCliente');
+  },
+
   async guardar() {
     const nombre    = document.getElementById('cliNombre').value.trim();
     const dni       = document.getElementById('cliDni').value.trim();
@@ -153,7 +214,6 @@ const ClientesModule = {
     clearErrors(['cliNombre','cliDni']);
     let ok = true;
     if (!nombre) { setError('cliNombre','err-cliNombre','El nombre es requerido'); ok = false; }
-
     if (!ok) return;
 
     setLoading('btnGuardarCliente','btnGuardarClienteText','btnGuardarClienteSpinner', true);

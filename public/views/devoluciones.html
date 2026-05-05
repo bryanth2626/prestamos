@@ -113,3 +113,23 @@
     </div>
   </div>
 </div>
+<div class="modal-overlay" id="modalDetalleDevolucion">
+  <div class="modal-panel" style="max-width:480px">
+    <div class="modal-header-custom">
+      <div>
+        <div class="modal-title-custom">Detalle de la Devolución</div>
+        <div class="modal-subtitle">Información completa del registro</div>
+      </div>
+      <button class="btn-modal-close" onclick="closeOverlay('modalDetalleDevolucion')">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="modal-body-custom" id="detalleDevolucionBody"></div>
+    <div class="modal-footer-custom">
+      <button class="btn-cancel" onclick="closeOverlay('modalDetalleDevolucion')">Cerrar</button>
+      <button class="btn-save" onclick="DevolucionesModule.abrirNuevo(DevolucionesModule._viendoId); closeOverlay('modalDetalleDevolucion')">
+        <i class="bi bi-pencil-fill me-1"></i> Editar
+      </button>
+    </div>
+  </div>
+</div>

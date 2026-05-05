@@ -3,6 +3,7 @@
 const DevolucionesModule = {
   devoluciones: [],
   editandoId: null,
+  _viendoId: null,
 
   async init() {
     this._bindEvents();
@@ -56,8 +57,10 @@ const DevolucionesModule = {
         <td>${this._retornoBadge(d.estado_retorno)}</td>
         <td class="cell-precio">${d.penalidad > 0 ? 'S/ '+formatPrecio(d.penalidad) : '—'}</td>
         <td>
-          <button class="btn-action btn-action-edit" onclick="DevolucionesModule.abrirNuevo(${d.id})" title="Editar"><i class="bi bi-pencil-fill"></i></button>
+          <button class="btn-action btn-action-view"   onclick="DevolucionesModule.verDetalle(${d.id})" title="Ver detalle"><i class="bi bi-eye-fill"></i></button>
+          <button class="btn-action btn-action-edit"   onclick="DevolucionesModule.abrirNuevo(${d.id})" title="Editar"><i class="bi bi-pencil-fill"></i></button>
           <button class="btn-action btn-action-delete" onclick="DevolucionesModule.eliminar(${d.id})" title="Eliminar"><i class="bi bi-trash3-fill"></i></button>
+          <button class="btn-action btn-action-chart"  onclick="GraficosModule._verGraficoRapido('devoluciones')" title="Ver gráfico"><i class="bi bi-bar-chart-fill"></i></button>
         </td>
       </tr>`).join('');
   },
@@ -97,103 +100,122 @@ const DevolucionesModule = {
       `<option value="${d.id}">${escapeHtml(d.nombre_herramienta)} [${d.codigo_herramienta||''}] — Entregado: ${d.estado_entrega}</option>`));
   },
 
-  
+  verDetalle(id) {
+    const d = this.devoluciones.find(x => x.id === id);
+    if (!d) return;
+    this._viendoId = id;
 
-    
-  
+    document.getElementById('detalleDevolucionBody').innerHTML = `
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label-custom">Cliente</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${escapeHtml(d.nombre_cliente || '—')}</div>
+        </div>
+        <div class="col-12">
+          <label class="form-label-custom">Herramienta</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${escapeHtml(d.nombre_herramienta || '—')} ${d.codigo_herramienta ? '['+escapeHtml(d.codigo_herramienta)+']' : ''}</div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label-custom">Fecha devolución real</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${formatFecha(d.fecha_devolucion_real)}</div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label-custom">Estado de retorno</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${escapeHtml(d.estado_retorno || '—')}</div>
+        </div>
+        <div class="col-12">
+          <label class="form-label-custom">Penalidad</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${d.penalidad > 0 ? 'S/ '+formatPrecio(d.penalidad) : '—'}</div>
+        </div>
+        <div class="col-12">
+          <label class="form-label-custom">Observaciones</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default;min-height:60px">${escapeHtml(d.observaciones || '—')}</div>
+        </div>
+      </div>`;
+
+    openOverlay('modalDetalleDevolucion');
+  },
 
   async abrirNuevo(id = null) {
-  this.editandoId = id;
+    this.editandoId = id;
 
-  ['devPrestamo','devDetallePrestamo','devObservaciones'].forEach(elId => {
-    const el = document.getElementById(elId);
-    if (el) el.value = '';
-  });
-  document.getElementById('devDetallePrestamo').innerHTML = '<option value="">Seleccionar herramienta…</option>';
+    ['devPrestamo','devDetallePrestamo','devObservaciones'].forEach(elId => {
+      const el = document.getElementById(elId);
+      if (el) el.value = '';
+    });
+    document.getElementById('devDetallePrestamo').innerHTML = '<option value="">Seleccionar herramienta…</option>';
 
-  document.getElementById('devFecha').value = new Date().toISOString().slice(0,10);
-  document.getElementById('devEstadoRetorno').value = 'igual';
-  document.getElementById('devPenalidad').value = 0;
+    document.getElementById('devFecha').value = new Date().toISOString().slice(0,10);
+    document.getElementById('devEstadoRetorno').value = 'igual';
+    document.getElementById('devPenalidad').value = 0;
 
-  document.getElementById('devPrestamo').disabled = false;
-  document.getElementById('devDetallePrestamo').disabled = false;
+    document.getElementById('devPrestamo').disabled = false;
+    document.getElementById('devDetallePrestamo').disabled = false;
 
+    await this._cargarPrestamosActivos();
 
+    if (id) {
+      const d = this.devoluciones.find(x => x.id === id);
+      if (!d) { showToast('Devolución no encontrada', 'error'); return; }
 
-  await this._cargarPrestamosActivos();
+      document.getElementById('modalDevolucionTitulo').innerText = 'Editar Devolución';
+      document.getElementById('btnGuardarDevolucionText').innerHTML = '<i class="bi bi-floppy-fill me-1"></i> Guardar Cambios';
 
-  if (id) {
-  const d = this.devoluciones.find(x => x.id === id);
+      document.getElementById('devFecha').value          = d.fecha_devolucion_real?.split('T')[0] || '';
+      document.getElementById('devEstadoRetorno').value  = d.estado_retorno || 'igual';
+      document.getElementById('devPenalidad').value      = d.penalidad || 0;
+      document.getElementById('devObservaciones').value  = d.observaciones || '';
 
-  if (!d) {
-    showToast('Devolución no encontrada', 'error');
-    return;
-  }
+      document.getElementById('devPrestamo').value = d.idprestamo;
+      this._onSeleccionarPrestamo();
+      document.getElementById('devDetallePrestamo').value = d.iddetalle_prestamo;
 
-  document.getElementById('modalDevolucionTitulo').innerText = 'Editar Devolución';
-  document.getElementById('btnGuardarDevolucionText').innerHTML = '<i class="bi bi-floppy-fill me-1"></i> Guardar Cambios';
+      document.getElementById('devPrestamo').disabled = true;
+      document.getElementById('devDetallePrestamo').disabled = true;
+    } else {
+      this.editandoId = null;
+      document.getElementById('modalDevolucionTitulo').innerText = 'Registrar Devolución';
+      document.getElementById('btnGuardarDevolucionText').innerHTML = '<i class="bi bi-floppy-fill me-1"></i> Registrar';
+      document.getElementById('devPrestamo').disabled = false;
+      document.getElementById('devDetallePrestamo').disabled = false;
+    }
 
-  document.getElementById('devFecha').value = d.fecha_devolucion_real?.split('T')[0] || '';
-  document.getElementById('devEstadoRetorno').value = d.estado_retorno || 'igual';
-  document.getElementById('devPenalidad').value = d.penalidad || 0;
-  document.getElementById('devObservaciones').value = d.observaciones || '';
+    openOverlay('modalDevolucion');
+  },
 
-  document.getElementById('devPrestamo').value = d.idprestamo;
-  this._onSeleccionarPrestamo();
-  document.getElementById('devDetallePrestamo').value = d.iddetalle_prestamo;
-
-  document.getElementById('devPrestamo').disabled = true;
-  document.getElementById('devDetallePrestamo').disabled = true;
-
-} else {
-  this.editandoId = null;
-
-  document.getElementById('modalDevolucionTitulo').innerText = 'Registrar Devolución';
-  document.getElementById('btnGuardarDevolucionText').innerHTML = '<i class="bi bi-floppy-fill me-1"></i> Registrar';
-
-  document.getElementById('devPrestamo').disabled = false;
-  document.getElementById('devDetallePrestamo').disabled = false;
-}
-
-  openOverlay('modalDevolucion');
-},
-
-  
   async guardar() {
-    const idprestamo          = document.getElementById('devPrestamo').value;
-    const iddetalle_prestamo  = document.getElementById('devDetallePrestamo').value;
+    const idprestamo            = document.getElementById('devPrestamo').value;
+    const iddetalle_prestamo    = document.getElementById('devDetallePrestamo').value;
     const fecha_devolucion_real = document.getElementById('devFecha').value;
-    const estado_retorno      = document.getElementById('devEstadoRetorno').value;
-    const penalidad           = document.getElementById('devPenalidad').value;
-    const observaciones       = document.getElementById('devObservaciones').value.trim();
+    const estado_retorno        = document.getElementById('devEstadoRetorno').value;
+    const penalidad             = document.getElementById('devPenalidad').value;
+    const observaciones         = document.getElementById('devObservaciones').value.trim();
 
     clearErrors(['devPrestamo','devDetallePrestamo','devFecha']);
     let ok = true;
-    if (!idprestamo)         { setError('devPrestamo','err-devPrestamo','El préstamo es requerido'); ok = false; }
-    if (!iddetalle_prestamo) { setError('devDetallePrestamo','err-devDetalle','Selecciona la herramienta'); ok = false; }
+    if (!idprestamo)            { setError('devPrestamo','err-devPrestamo','El préstamo es requerido'); ok = false; }
+    if (!iddetalle_prestamo)    { setError('devDetallePrestamo','err-devDetalle','Selecciona la herramienta'); ok = false; }
     if (!fecha_devolucion_real) { setError('devFecha','err-devFecha','La fecha es requerida'); ok = false; }
     if (!ok) return;
 
     setLoading('btnGuardarDevolucion','btnGuardarDevolucionText','btnGuardarDevolucionSpinner', true);
     try {
-
       const body = {
-      idprestamo,
-      iddetalle_prestamo,
-      fecha_devolucion_real,
-      estado_retorno,
-      penalidad: penalidad || 0,
-      observaciones: observaciones || null
-    };
+        idprestamo,
+        iddetalle_prestamo,
+        fecha_devolucion_real,
+        estado_retorno,
+        penalidad: penalidad || 0,
+        observaciones: observaciones || null
+      };
 
-    if (this.editandoId) {
-      await http(`/api/devoluciones/${this.editandoId}`, 'PUT', body);
-      showToast('Devolución actualizada correctamente', 'success');
-    } else {
-      await http('/api/devoluciones', 'POST', body);
-      showToast('Devolución registrada correctamente', 'success');
-
-    }
+      if (this.editandoId) {
+        await http(`/api/devoluciones/${this.editandoId}`, 'PUT', body);
+        showToast('Devolución actualizada correctamente', 'success');
+      } else {
+        await http('/api/devoluciones', 'POST', body);
+        showToast('Devolución registrada correctamente', 'success');
+      }
       closeOverlay('modalDevolucion');
       await this.load();
     } catch (e) {
@@ -202,8 +224,6 @@ const DevolucionesModule = {
       setLoading('btnGuardarDevolucion','btnGuardarDevolucionText','btnGuardarDevolucionSpinner', false);
     }
   },
-
-  
 
   eliminar(id) {
     DeleteModal.open('devolucion', id, `devolución #${id}`, async () => {
@@ -222,8 +242,8 @@ const DevolucionesModule = {
     document.getElementById('filterEstadoDevolucion')?.addEventListener('change', () => this._filter());
     document.getElementById('btnNuevaDevolucion')?.addEventListener('click', () => this.abrirNuevo());
     document.getElementById('btnRefreshDevoluciones')?.addEventListener('click', () => this.load());
-    ['modalDevolucion'].forEach(id => {
-      document.getElementById(id).addEventListener('click', e => {
+    ['modalDevolucion', 'modalDetalleDevolucion'].forEach(id => {
+      document.getElementById(id)?.addEventListener('click', e => {
         if (e.target.id === id) closeOverlay(id);
       });
     });

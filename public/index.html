@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Préstamos — Panel de Gestión</title>
-
+  <link rel="stylesheet" href="/css/graficos.css">
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
   <!-- Google Fonts -->
@@ -69,6 +69,12 @@
       <span>Devoluciones</span>
       <span class="nav-badge" id="badge-devoluciones">0</span>
     </div>
+    <div class="nav-item" data-page="graficos">
+      <i class="bi bi-bar-chart-line-fill"></i>
+      <span>Gráficos</span>
+    </div>
+
+
   </nav>
 
   <div class="sidebar-footer">
@@ -121,6 +127,8 @@
 <script src="/js/modules/clientes.js"></script>
 <script src="/js/modules/prestamos.js"></script>
 <script src="/js/modules/devoluciones.js"></script>
+<script src="/js/modules/graficos.js"></script>
+
 <!-- Router y App (al final) -->
 <script src="/js/router.js"></script>
 <script src="/js/app.js"></script>

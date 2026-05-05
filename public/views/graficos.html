@@ -1,0 +1,44 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Gráficos y Estadísticas</h1>
+    <p class="page-subtitle">Visualiza los datos de cada módulo del sistema</p>
+  </div>
+  <div class="charts-header-controls">
+    <select id="selectorModuloGrafico" class="filter-select" style="min-width:200px;">
+      <option value="">— Selecciona un módulo —</option>
+      <option value="prestamos">📦 Préstamos</option>
+      <option value="clientes">👤 Clientes</option>
+      <option value="devoluciones">🔄 Devoluciones</option>
+      <option value="herramientas">🔧 Herramientas</option>
+      <option value="proveedores">🏭 Proveedores</option>
+    </select>
+    <button class="btn-icon-outline" id="btnRefreshGraficos" title="Recargar datos" style="display:none;">
+      <i class="bi bi-arrow-clockwise"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Estado inicial: sin selección -->
+<div id="graficosEmptyState" class="card-panel" style="text-align:center; padding:80px 20px;">
+  <i class="bi bi-bar-chart-line" style="font-size:56px; opacity:0.2; display:block; margin-bottom:16px;"></i>
+  <p style="color:var(--text-muted); font-size:15px;">Selecciona un módulo para visualizar sus estadísticas</p>
+</div>
+
+<!-- Loader -->
+<div id="graficosLoader" style="display:none; text-align:center; padding:80px 20px;">
+  <div class="spinner-custom mx-auto"></div>
+  <p style="color:var(--text-muted); margin-top:16px; font-size:14px;">Cargando datos…</p>
+</div>
+
+<!-- Contenedor de gráficos -->
+<div id="graficosContainer" style="display:none;">
+
+  <!-- Tarjetas resumen -->
+  <div id="graficosKpis" class="graficos-kpi-row"></div>
+
+  <!-- Gráficos -->
+  <div class="graficos-grid" id="graficosGrid">
+    <!-- Se inyectan dinámicamente -->
+  </div>
+
+</div>

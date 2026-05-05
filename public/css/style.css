@@ -695,6 +695,7 @@ a { text-decoration: none; color: inherit; }
   box-shadow: var(--shadow-lg);
   animation: modalIn .25s cubic-bezier(.34,1.56,.64,1);
   overflow: hidden;
+  max-height: 90vh;
 }
 
 .modal-panel.modal-sm { max-width: 400px; }
@@ -984,6 +985,18 @@ a { text-decoration: none; color: inherit; }
 #modalHerramienta input[type="number"] {
   -moz-appearance: textfield;
 }
+/* Fix scroll modal herramientas */
+#modalHerramienta .modal-panel {
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#modalHerramienta .modal-body-custom {
+  overflow-y: auto;
+  flex: 1;
+  max-height: calc(92vh - 140px);
+}
 
 /* Responsive tablet */
 @media (max-width: 992px) {
@@ -1020,7 +1033,19 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* -- modal proveedor */
+/* Modal devoluciones */
+/* Fix scroll modal devoluciones */
+#modalDevolucion .modal-panel {
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+}
 
+#modalDevolucion .modal-body-custom {
+  overflow-y: auto;
+  flex: 1;
+  max-height: calc(92vh - 140px);
+}
 /* ══════════════════════════════════════════
    MODAL PROVEEDORES - ESTILO PROFESIONAL
 ══════════════════════════════════════════ */
@@ -1134,6 +1159,32 @@ a { text-decoration: none; color: inherit; }
   #modalProveedor .btn-cancel {
     width: 100%;
   }
+}
+* Fix específico para el modal de nuevo préstamo que es más largo */
+#modalPrestamo .modal-panel {
+  max-width: 600px;
+  max-height: 92vh;
+}
+ 
+#modalPrestamo .modal-body-custom {
+  max-height: calc(92vh - 140px); /* resta header + footer */
+  overflow-y: auto;
+  padding-right: 18px; /* espacio para scrollbar */
+}
+ 
+/* Scrollbar estilizada */
+.modal-body-custom::-webkit-scrollbar {
+  width: 5px;
+}
+.modal-body-custom::-webkit-scrollbar-track {
+  background: var(--surface-2);
+}
+.modal-body-custom::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+.modal-body-custom::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
 

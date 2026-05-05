@@ -46,6 +46,8 @@ const ProveedoresModule = {
         <td>
           <button class="btn-action btn-action-edit"   onclick="ProveedoresModule.abrirEditar(${p.id})" title="Editar"><i class="bi bi-pencil-fill"></i></button>
           <button class="btn-action btn-action-delete" onclick="ProveedoresModule.eliminar(${p.id}, '${escapeHtml(p.nombre_comercial)}')" title="Eliminar"><i class="bi bi-trash3-fill"></i></button>
+          <button class="btn-action btn-action-chart"  onclick="GraficosModule._verGraficoRapido('proveedores', ${p.id})" title="Ver gráfico"><i class="bi bi-bar-chart-fill"></i></button>
+
         </td>
       </tr>`).join('');
   },

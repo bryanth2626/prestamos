@@ -61,6 +61,7 @@ const PrestamosModule = {
           <button class="btn-action btn-action-view"   onclick="PrestamosModule.verDetalle(${p.id})" title="Ver detalle"><i class="bi bi-eye-fill"></i></button>
           <button class="btn-action btn-action-edit"   onclick="PrestamosModule.abrirEditar(${p.id})" title="Editar estado"><i class="bi bi-pencil-fill"></i></button>
           <button class="btn-action btn-action-delete" onclick="PrestamosModule.eliminar(${p.id})" title="Eliminar"><i class="bi bi-trash3-fill"></i></button>
+          <button class="btn-action btn-action-chart"  onclick="GraficosModule._verGraficoRapido('prestamos', ${p.id})" title="Ver gráfico"><i class="bi bi-bar-chart-fill"></i></button>
         </td>
       </tr>`).join('');
   },

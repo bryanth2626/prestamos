@@ -48,6 +48,12 @@ const ROUTES = {
     view:   '/views/clientes.html',
     module: () => ClientesModule,
   },
+  // Después de la última ruta (ej: clientes)
+  graficos: {
+    title:  'Gráficos',
+    view:   '/views/graficos.html',
+    module: () => GraficosModule,
+  },
 };
 
 const viewCache = {};

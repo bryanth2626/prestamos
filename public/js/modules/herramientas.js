@@ -129,6 +129,13 @@ const Herramientasmodule = {
             title="Eliminar">
             <i class="bi bi-trash3-fill"></i>
           </button>
+          <button 
+            class="btn-action btn-action-chart"
+            onclick="GraficosModule._verGraficoRapido('herramientas')"
+            title="Ver gráfico">
+            <i class="bi bi-bar-chart-fill"></i>
+          </button>
+
         </td>
       </tr>
     `).join('');
