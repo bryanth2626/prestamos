@@ -24,6 +24,9 @@
   <button class="btn-icon-outline" id="btnRefreshDevoluciones" title="Recargar">
     <i class="bi bi-arrow-clockwise"></i>
   </button>
+  <button class="btn-icon-outline" id="btnExportarPdfDevoluciones" title="Exportar PDF">
+    <i class="bi bi-file-earmark-pdf-fill" style="color:#ef4444"></i>
+  </button>
 </div>
 
 <div class="card-panel">
@@ -129,6 +132,84 @@
       <button class="btn-cancel" onclick="closeOverlay('modalDetalleDevolucion')">Cerrar</button>
       <button class="btn-save" onclick="DevolucionesModule.abrirNuevo(DevolucionesModule._viendoId); closeOverlay('modalDetalleDevolucion')">
         <i class="bi bi-pencil-fill me-1"></i> Editar
+      </button>
+    </div>
+  </div>
+</div>
+<!-- Modal Vista Previa PDF -->
+<div class="modal-overlay" id="modalPdfDevolucion">
+  <div class="modal-panel" style="max-width:780px; width:95%;">
+    <div class="modal-header-custom">
+      <div>
+        <div class="modal-title-custom">Exportar PDF — Devoluciones</div>
+        <div class="modal-subtitle">Configura qué columnas aparecerán en el reporte</div>
+      </div>
+      <button class="btn-modal-close" onclick="closeOverlay('modalPdfDevolucion')">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="modal-body-custom">
+
+      <!-- Filtros de columnas -->
+      <div style="margin-bottom:18px;">
+        <p class="form-label-custom" style="margin-bottom:10px;">
+          <i class="bi bi-sliders me-1"></i> Columnas a incluir
+        </p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px;" id="pdfColumnasDev">
+          <label class="pdf-col-toggle"><input type="checkbox" value="nombre_cliente"        checked> Cliente</label>
+          <label class="pdf-col-toggle"><input type="checkbox" value="nombre_herramienta"   checked> Herramienta</label>
+          <label class="pdf-col-toggle"><input type="checkbox" value="codigo_herramienta"   checked> Código</label>
+          <label class="pdf-col-toggle"><input type="checkbox" value="fecha_devolucion_real" checked> Fecha devolución</label>
+          <label class="pdf-col-toggle"><input type="checkbox" value="estado_retorno"        checked> Estado retorno</label>
+          <label class="pdf-col-toggle"><input type="checkbox" value="penalidad"             checked> Penalidad</label>
+          <label class="pdf-col-toggle"><input type="checkbox" value="observaciones"                > Observaciones</label>
+        </div>
+      </div>
+
+      <!-- Filtro adicional por estado -->
+      <div style="margin-bottom:18px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <div>
+          <label class="form-label-custom">Filtrar por estado</label>
+          <select id="pdfFiltroEstadoDev" class="input-custom" style="min-width:160px;">
+            <option value="">Todos</option>
+            <option value="igual">Igual</option>
+            <option value="bueno">Bueno</option>
+            <option value="regular">Regular</option>
+            <option value="dañado">Dañado</option>
+            <option value="perdido">Perdido</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label-custom">Título del reporte</label>
+          <input type="text" id="pdfTituloDev" class="input-custom" value="Reporte de Devoluciones"
+                 style="min-width:220px;" placeholder="Título personalizado…"/>
+        </div>
+      </div>
+
+      <!-- Vista previa de tabla -->
+      <div style="border:1px solid var(--border); border-radius:8px; overflow:hidden;">
+        <div style="background:var(--bg-secondary); padding:8px 14px; font-size:12px; color:var(--text-muted);">
+          <i class="bi bi-eye me-1"></i> Vista previa (primeras 5 filas)
+        </div>
+        <div style="overflow-x:auto; max-height:260px; overflow-y:auto;">
+          <table class="table-custom" id="pdfPreviewTableDev" style="font-size:12px;">
+            <thead id="pdfPreviewHeadDev"></thead>
+            <tbody id="pdfPreviewBodyDev"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- KPIs resumen -->
+      <div id="pdfKpisDev" style="display:flex; gap:14px; flex-wrap:wrap; margin-top:16px;"></div>
+
+    </div>
+
+    <div class="modal-footer-custom">
+      <button class="btn-cancel" onclick="closeOverlay('modalPdfDevolucion')">Cancelar</button>
+      <button class="btn-save" id="btnGenerarPdfDev" onclick="DevolucionesModule.generarPdf()">
+        <span id="btnGenerarPdfDevText"><i class="bi bi-file-earmark-pdf-fill me-1"></i> Generar PDF</span>
+        <span id="btnGenerarPdfDevSpinner" class="d-none"><span class="spinner-sm"></span></span>
       </button>
     </div>
   </div>
