@@ -1,0 +1,78 @@
+/* ══════════════════════════════════════════════
+   HERRAMIENTAS — Estilos específicos del módulo
+══════════════════════════════════════════════ */
+
+#modalHerramienta .modal-panel {
+  max-width: 920px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#modalHerramienta .modal-body-custom {
+  overflow-y: auto;
+  flex: 1;
+  max-height: calc(92vh - 140px);
+  padding: 22px;
+}
+
+#modalHerramienta .modal-title-custom {
+  display: flex; align-items: center; gap: 8px;
+}
+#modalHerramienta .modal-title-custom i {
+  color: var(--primary); font-size: 20px;
+}
+
+#modalHerramienta .row.g-3 {
+  --bs-gutter-x: 18px;
+  --bs-gutter-y: 18px;
+}
+
+#modalHerramienta .form-label-custom {
+  margin-bottom: 7px; font-size: 13px; font-weight: 600;
+}
+
+#modalHerramienta .input-prefix-wrap { position: relative; }
+#modalHerramienta .input-prefix {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%); color: var(--text-muted);
+  font-size: 14px; z-index: 3; pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+}
+
+#modalHerramienta textarea + .input-prefix,
+#modalHerramienta .input-prefix-wrap textarea ~ .input-prefix {
+  top: 16px; transform: none;
+}
+
+#modalHerramienta .input-with-prefix { padding-left: 42px; }
+
+#modalHerramienta textarea.input-with-prefix {
+  min-height: 95px; resize: vertical; line-height: 1.5;
+}
+
+#modalHerramienta .input-custom { background: #fff; transition: all .22s ease; }
+#modalHerramienta .input-custom:hover  { border-color: #cfd4dc; }
+#modalHerramienta .input-custom:focus  { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99,102,241,.12); }
+#modalHerramienta select.input-custom  { cursor: pointer; }
+#modalHerramienta .field-error         { margin-top: 5px; }
+
+#modalHerramienta .modal-footer-custom { padding: 14px 22px; }
+#modalHerramienta .btn-save   { min-width: 210px; justify-content: center; }
+#modalHerramienta .btn-cancel { min-width: 120px; }
+
+#modalHerramienta input[type="number"]::-webkit-outer-spin-button,
+#modalHerramienta input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+#modalHerramienta input[type="number"] { -moz-appearance: textfield; }
+
+@media (max-width: 992px) { #modalHerramienta .modal-panel { max-width: 95%; } }
+
+@media (max-width: 768px) {
+  #modalHerramienta .modal-panel    { max-width: 100%; margin: 10px; }
+  #modalHerramienta .modal-body-custom { padding: 16px; }
+  #modalHerramienta .col-md-6,
+  #modalHerramienta .col-md-4       { width: 100%; }
+  #modalHerramienta .modal-footer-custom { flex-direction: column-reverse; gap: 10px; }
+  #modalHerramienta .btn-save,
+  #modalHerramienta .btn-cancel     { width: 100%; }
+}

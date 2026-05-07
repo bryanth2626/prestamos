@@ -1,0 +1,42 @@
+/* ══════════════════════════════════════════════
+   PROVEEDORES — Estilos específicos del módulo
+══════════════════════════════════════════════ */
+
+#modalProveedor .modal-panel { max-width: 720px; }
+
+#modalProveedor .modal-title-custom { display: flex; align-items: center; gap: 8px; }
+#modalProveedor .modal-title-custom i { color: var(--primary); font-size: 18px; }
+
+#modalProveedor .modal-body-custom { padding: 20px; }
+
+#modalProveedor .row.g-3 { --bs-gutter-x: 16px; --bs-gutter-y: 16px; }
+
+#modalProveedor .input-prefix-wrap { position: relative; }
+#modalProveedor .input-prefix {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%); color: var(--text-muted);
+  font-size: 14px; z-index: 2; pointer-events: none;
+}
+
+#modalProveedor textarea + .input-prefix,
+#modalProveedor .input-prefix-wrap textarea ~ .input-prefix { top: 18px; transform: none; }
+
+#modalProveedor .input-with-prefix        { padding-left: 40px; }
+#modalProveedor textarea.input-with-prefix { min-height: 90px; resize: vertical; line-height: 1.5; }
+
+#modalProveedor .input-custom            { background: #fff; transition: all .2s ease; }
+#modalProveedor .input-custom:hover      { border-color: #cfd4dc; }
+#modalProveedor .input-custom:focus      { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99,102,241,.12); }
+#modalProveedor .form-label-custom       { margin-bottom: 7px; font-size: 13px; }
+#modalProveedor .modal-footer-custom     { padding: 14px 20px; }
+#modalProveedor .btn-save   { min-width: 170px; justify-content: center; }
+#modalProveedor .btn-cancel { min-width: 110px; }
+
+@media (max-width: 768px) {
+  #modalProveedor .modal-panel         { max-width: 100%; margin: 10px; }
+  #modalProveedor .modal-body-custom   { padding: 16px; }
+  #modalProveedor .col-md-6            { width: 100%; }
+  #modalProveedor .modal-footer-custom { flex-direction: column-reverse; }
+  #modalProveedor .btn-save,
+  #modalProveedor .btn-cancel          { width: 100%; }
+}

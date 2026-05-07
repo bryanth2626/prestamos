@@ -240,6 +240,28 @@
 
   </div>
 </div>
+
+<!-- Modal Ver Detalle -->
+<div class="modal-overlay" id="modalDetalleHerramienta">
+  <div class="modal-panel" style="max-width:500px">
+    <div class="modal-header-custom">
+      <div>
+        <div class="modal-title-custom"><i class="bi bi-tools me-2"></i>Detalle de Herramienta</div>
+        <div class="modal-subtitle">Información completa del registro</div>
+      </div>
+      <button class="btn-modal-close" onclick="closeOverlay('modalDetalleHerramienta')">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="modal-body-custom" id="detalleHerramientaBody"></div>
+    <div class="modal-footer-custom">
+      <button class="btn-cancel" onclick="closeOverlay('modalDetalleHerramienta')">Cerrar</button>
+      <button class="btn-save" onclick="Herramientasmodule.openEdit(Herramientasmodule._viendoId); closeOverlay('modalDetalleHerramienta')">
+        <i class="bi bi-pencil-fill me-1"></i> Editar
+      </button>
+    </div>
+  </div>
+</div>
 <div class="modal-overlay" id="modalPdfHerramienta">
   <div class="modal-panel" style="max-width:780px; width:95%; max-height:90vh; overflow-y:auto;">
     <div class="modal-header-custom">
@@ -300,7 +322,7 @@
     </div>
     <div class="modal-footer-custom">
       <button class="btn-cancel" onclick="closeOverlay('modalPdfHerramienta')">Cancelar</button>
-      <button class="btn-save" id="btnGenerarPdfHerr" onclick="HerramientasModule.generarPdf()">
+      <button class="btn-save" id="btnGenerarPdfHerr" onclick="Herramientasmodule.generarPdf()">
         <span id="btnGenerarPdfHerrText"><i class="bi bi-file-earmark-pdf-fill me-1"></i> Generar PDF</span>
         <span id="btnGenerarPdfHerrSpinner" class="d-none"><span class="spinner-sm"></span></span>
       </button>

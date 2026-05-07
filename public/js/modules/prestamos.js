@@ -3,6 +3,7 @@
 const PrestamosModule = {
   prestamos: [],
   editandoId: null,
+  _viendoId: null, 
   herramientasDisponibles: [],
   itemsSeleccionados: [], // [{idherramienta, nombre, cantidad, estado_entrega}]
 
@@ -77,20 +78,64 @@ const PrestamosModule = {
     this._render(f);
   },
 
+  // ✅ pon esto
   verDetalle(id) {
     const p = this.prestamos.find(x => x.id === id);
     if (!p) return;
-    const items = (p.detalle || []).map(d =>
-      `<li class="mb-1"><strong>${escapeHtml(d.nombre_herramienta)}</strong> (${escapeHtml(d.codigo_herramienta||'')}) — Cant: ${d.cantidad} — Entregado: ${d.estado_entrega}</li>`
-    ).join('');
+    this._viendoId = id;
+
+    const items = (p.detalle || []).map(d => `
+      <div class="input-custom mb-2" style="background:var(--bg-secondary);cursor:default">
+        <strong>${escapeHtml(d.nombre_herramienta)}</strong>
+        <span class="text-muted text-sm ms-2">
+          [${escapeHtml(d.codigo_herramienta || '')}] — Cant: ${d.cantidad} — Entregado: ${d.estado_entrega}
+        </span>
+      </div>`).join('');
+
     document.getElementById('detallePrestamoBody').innerHTML = `
-      <p><strong>Cliente:</strong> ${escapeHtml(p.nombre_cliente)} — DNI: ${escapeHtml(p.dni_cliente||'—')}</p>
-      <p><strong>Préstamo:</strong> ${formatFecha(p.fecha_prestamo)} → <strong>Devolución esperada:</strong> ${formatFecha(p.fecha_devolucion_esperada)}</p>
-      <p><strong>Estado:</strong> ${p.estado} ${p.fecha_cierre ? '| Cerrado: '+formatFecha(p.fecha_cierre) : ''}</p>
-      ${p.observaciones ? `<p><strong>Observaciones:</strong> ${escapeHtml(p.observaciones)}</p>` : ''}
-      <hr/>
-      <p><strong>Herramientas prestadas:</strong></p>
-      <ul>${items || '<li>Sin detalle</li>'}</ul>`;
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label-custom">Cliente</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">
+            ${escapeHtml(p.nombre_cliente)} — DNI: ${escapeHtml(p.dni_cliente || '—')}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label-custom">Fecha préstamo</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">
+            ${formatFecha(p.fecha_prestamo)}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label-custom">Devolución esperada</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">
+            ${formatFecha(p.fecha_devolucion_esperada)}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label-custom">Estado</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">
+            ${this._estadoBadge(p.estado)}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label-custom">Fecha cierre</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">
+            ${p.fecha_cierre ? formatFecha(p.fecha_cierre) : '—'}
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="form-label-custom">Observaciones</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default;min-height:60px">
+            ${escapeHtml(p.observaciones || '—')}
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="form-label-custom">Herramientas prestadas</label>
+          ${items || '<div class="input-custom" style="background:var(--bg-secondary);cursor:default">Sin herramientas registradas</div>'}
+        </div>
+      </div>`;
+
     openOverlay('modalDetallePrestamo');
   },
 

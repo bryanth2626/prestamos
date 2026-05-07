@@ -1,0 +1,19 @@
+/* ══════════════════════════════════════════════
+   DEVOLUCIONES — Estilos específicos del módulo
+══════════════════════════════════════════════ */
+
+#modalDevolucion .modal-panel {
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#modalDevolucion .modal-body-custom {
+  overflow-y: auto;
+  flex: 1;
+  max-height: calc(92vh - 140px);
+}
+
+#modalDetalleDevolucion .modal-panel {
+  max-width: 480px;
+}

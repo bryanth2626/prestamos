@@ -1,0 +1,26 @@
+/* ══════════════════════════════════════════════
+   CLIENTES — Estilos específicos del módulo
+══════════════════════════════════════════════ */
+
+#modalCliente .modal-panel {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+#modalCliente .modal-body-custom {
+  overflow-y: auto;
+  flex: 1;
+}
+
+#modalCliente .modal-footer-custom {
+  position: sticky;
+  bottom: 0;
+  background: var(--surface-2);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+#modalDetalleCliente .modal-panel {
+  max-width: 480px;
+}

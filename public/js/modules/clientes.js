@@ -6,7 +6,6 @@ const ClientesModule = {
   _viendoId: null,
 
   async init() {
-    this._renderModal();
     this._bindEvents();
     await this.load();
   },
@@ -54,7 +53,7 @@ const ClientesModule = {
           <button class="btn-action btn-action-view"   onclick="ClientesModule.verDetalle(${c.id})" title="Ver detalle"><i class="bi bi-eye-fill"></i></button>
           <button class="btn-action btn-action-edit"   onclick="ClientesModule.abrirEditar(${c.id})" title="Editar"><i class="bi bi-pencil-fill"></i></button>
           <button class="btn-action btn-action-delete" onclick="ClientesModule.eliminar(${c.id}, '${escapeHtml(c.nombre)}')" title="Eliminar"><i class="bi bi-trash3-fill"></i></button>
-          <button class="btn-action btn-action-chart" onclick="GraficosModule._verGraficoRapido('clientes')" title="Ver gráfico"><i class="bi bi-bar-chart-fill"></i></button>
+          <button class="btn-action btn-action-chart"  onclick="GraficosModule._verGraficoRapido('clientes')" title="Ver gráfico"><i class="bi bi-bar-chart-fill"></i></button>
         </td>
       </tr>`).join('');
   },
@@ -69,107 +68,14 @@ const ClientesModule = {
     this._render(filtrados);
   },
 
-  /* ── MODALS ── */
-  _renderModal() {
-    // Modal Nuevo / Editar
-    document.getElementById('modalsContainer').insertAdjacentHTML('beforeend', `
-      <div class="modal-overlay" id="modalCliente">
-        <div class="modal-panel">
-          <div class="modal-header-custom">
-            <div>
-              <div class="modal-title-custom" id="modalClienteTitulo">Nuevo Cliente</div>
-              <div class="modal-subtitle">Completa los campos del formulario</div>
-            </div>
-            <button class="btn-modal-close" onclick="closeOverlay('modalCliente')"><i class="bi bi-x-lg"></i></button>
-          </div>
-          <div class="modal-body-custom">
-            <div class="row g-3">
-              <div class="col-12">
-                <label class="form-label-custom">Nombre completo <span class="required">*</span></label>
-                <input type="text" id="cliNombre" class="input-custom" placeholder="Ej: Roberto Silva Mendoza" maxlength="150"/>
-                <div class="field-error" id="err-cliNombre"></div>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label-custom">DNI</label>
-                <input type="text" id="cliDni" class="input-custom" placeholder="Ej: 45678901" maxlength="20"/>
-                <div class="field-error" id="err-cliDni"></div>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label-custom">Teléfono</label>
-                <input type="text" id="cliTelefono" class="input-custom" placeholder="Ej: 987123456" maxlength="20"/>
-              </div>
-              <div class="col-12">
-                <label class="form-label-custom">Email</label>
-                <input type="email" id="cliEmail" class="input-custom" placeholder="correo@ejemplo.com" maxlength="100"/>
-              </div>
-              <div class="col-12">
-                <label class="form-label-custom">Dirección</label>
-                <textarea id="cliDireccion" class="input-custom" rows="2" placeholder="Av. Los Pinos 234..."></textarea>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label-custom">Estado</label>
-                <select id="cliEstado" class="input-custom">
-                  <option value="activo">Activo</option>
-                  <option value="inactivo">Inactivo</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer-custom">
-            <button class="btn-cancel" onclick="closeOverlay('modalCliente')">Cancelar</button>
-            <button class="btn-save" id="btnGuardarCliente" onclick="ClientesModule.guardar()">
-              <span id="btnGuardarClienteText"><i class="bi bi-floppy-fill me-1"></i> Guardar</span>
-              <span id="btnGuardarClienteSpinner" class="d-none"><span class="spinner-sm"></span></span>
-            </button>
-          </div>
-        </div>
-      </div>`);
-
-    document.getElementById('modalCliente').addEventListener('click', e => {
-      if (e.target.id === 'modalCliente') closeOverlay('modalCliente');
-    });
-
-    // Modal Ver Detalle
-    document.getElementById('modalsContainer').insertAdjacentHTML('beforeend', `
-      <div class="modal-overlay" id="modalDetalleCliente">
-        <div class="modal-panel" style="max-width:480px">
-          <div class="modal-header-custom">
-            <div>
-              <div class="modal-title-custom">Detalle del Cliente</div>
-              <div class="modal-subtitle">Información completa del registro</div>
-            </div>
-            <button class="btn-modal-close" onclick="closeOverlay('modalDetalleCliente')"><i class="bi bi-x-lg"></i></button>
-          </div>
-          <div class="modal-body-custom" id="detalleClienteBody"></div>
-          <div class="modal-footer-custom">
-            <button class="btn-cancel" onclick="closeOverlay('modalDetalleCliente')">Cerrar</button>
-            <button class="btn-save" onclick="ClientesModule.abrirEditar(ClientesModule._viendoId); closeOverlay('modalDetalleCliente')">
-              <i class="bi bi-pencil-fill me-1"></i> Editar
-            </button>
-          </div>
-        </div>
-      </div>`);
-
-    document.getElementById('modalDetalleCliente').addEventListener('click', e => {
-      if (e.target.id === 'modalDetalleCliente') closeOverlay('modalDetalleCliente');
-    });
-  },
-
   _limpiarModal() {
     ['cliNombre','cliDni','cliTelefono','cliEmail','cliDireccion'].forEach(id => {
       const el = document.getElementById(id);
-      if (el) {
-        el.value = '';
-        el.classList.remove('is-invalid');
-      }
+      if (el) { el.value = ''; el.classList.remove('is-invalid'); }
     });
-
-    // Estado por defecto
     const estado = document.getElementById('cliEstado');
     if (estado) estado.value = 'activo';
-
     ['err-cliNombre','err-cliDni'].forEach(id => setText(id, ''));
-
     this.editandoId = null;
   },
 
@@ -191,7 +97,7 @@ const ClientesModule = {
     document.getElementById('cliTelefono').value  = c.telefono  || '';
     document.getElementById('cliEmail').value     = c.email     || '';
     document.getElementById('cliDireccion').value = c.direccion || '';
-    document.getElementById('cliEstado').value = c.estado || 'activo';
+    document.getElementById('cliEstado').value    = c.estado    || 'activo';
     openOverlay('modalCliente');
   },
 
@@ -222,6 +128,10 @@ const ClientesModule = {
           <label class="form-label-custom">Dirección</label>
           <div class="input-custom" style="background:var(--bg-secondary);cursor:default;min-height:60px">${escapeHtml(c.direccion || '—')}</div>
         </div>
+        <div class="col-md-6">
+          <label class="form-label-custom">Estado</label>
+          <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${c.estado === 'activo' ? 'Activo' : 'Inactivo'}</div>
+        </div>
       </div>`;
 
     openOverlay('modalDetalleCliente');
@@ -233,7 +143,7 @@ const ClientesModule = {
     const telefono  = document.getElementById('cliTelefono').value.trim();
     const email     = document.getElementById('cliEmail').value.trim();
     const direccion = document.getElementById('cliDireccion').value.trim();
-    const estado = document.getElementById('cliEstado').value;
+    const estado    = document.getElementById('cliEstado').value;
 
     clearErrors(['cliNombre','cliDni']);
     let ok = true;
@@ -244,9 +154,9 @@ const ClientesModule = {
     try {
       const body = {
         nombre,
-        dni: dni || null,
-        telefono: telefono || null,
-        email: email || null,
+        dni:       dni       || null,
+        telefono:  telefono  || null,
+        email:     email     || null,
         direccion: direccion || null,
         estado
       };
@@ -283,11 +193,18 @@ const ClientesModule = {
     document.getElementById('btnNuevoCliente')?.addEventListener('click', () => this.abrirNuevo());
     document.getElementById('btnRefreshClientes')?.addEventListener('click', () => this.load());
     document.getElementById('btnExportarPdfClientes')?.addEventListener('click', () => this.abrirModalPdf());
-    document.getElementById('modalPdfCliente')?.addEventListener('click', e => {
-      if (e.target.id === 'modalPdfCliente') closeOverlay('modalPdfCliente');
+
+    // ← esto faltaba:
+    document.getElementById('btnGuardarCliente')?.addEventListener('click', () => this.guardar());
+
+    ['modalCliente', 'modalDetalleCliente', 'modalPdfCliente'].forEach(id => {
+      document.getElementById(id)?.addEventListener('click', e => {
+        if (e.target.id === id) closeOverlay(id);
+      });
     });
   },
-// ══════════════════════════════════════════
+
+  // ══════════════════════════════════════════
   //  PDF
   // ══════════════════════════════════════════
 
@@ -337,9 +254,9 @@ const ClientesModule = {
   },
 
   _actualizarKpisPdf(datos) {
-    const total    = datos.length;
-    const activos  = datos.filter(c => c.estado === 'activo').length;
-    const inactivos= datos.filter(c => c.estado === 'inactivo').length;
+    const total     = datos.length;
+    const activos   = datos.filter(c => c.estado === 'activo').length;
+    const inactivos = datos.filter(c => c.estado === 'inactivo').length;
     document.getElementById('pdfKpisCli').innerHTML = `
       <div style="flex:1;min-width:140px;background:var(--bg-secondary);border-radius:10px;padding:12px 16px;">
         <div style="font-size:22px;font-weight:700;color:var(--primary)">${total}</div>
@@ -373,7 +290,7 @@ const ClientesModule = {
       if (!datos.length) { showToast('No hay datos para exportar', 'error'); return; }
 
       const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-      const now = new Date();
+      const now  = new Date();
       const hoy  = `${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getFullYear()}`;
       const hora = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
 
@@ -387,8 +304,8 @@ const ClientesModule = {
       doc.setFont('helvetica', 'normal');
       doc.text(`Generado: ${hoy} ${hora}`, 297 - 14, 14, { align: 'right' });
 
-      const activos  = datos.filter(c => c.estado === 'activo').length;
-      const inactivos= datos.filter(c => c.estado === 'inactivo').length;
+      const activos   = datos.filter(c => c.estado === 'activo').length;
+      const inactivos = datos.filter(c => c.estado === 'inactivo').length;
       const kpiY = 30;
       const kpis = [
         { l: 'Total clientes', v: String(datos.length) },
@@ -412,11 +329,11 @@ const ClientesModule = {
         head: [cols.map(c => c.label)],
         body: datos.map(d => cols.map(c => this._formatCeldaPdf(d, c.key))),
         startY: kpiY + 14,
-        styles: { fontSize: 9, cellPadding: 3, textColor: [40,40,40], lineColor: [220,220,230], lineWidth: 0.2 },
-        headStyles: { fillColor: [99,102,241], textColor: [255,255,255], fontStyle: 'bold', halign: 'center' },
-        alternateRowStyles: { fillColor: [248,248,255] },
-        columnStyles: { 0: { fontStyle: 'bold' } },
-        margin: { left: 14, right: 14 },
+        styles:            { fontSize: 9, cellPadding: 3, textColor: [40,40,40], lineColor: [220,220,230], lineWidth: 0.2 },
+        headStyles:        { fillColor: [99,102,241], textColor: [255,255,255], fontStyle: 'bold', halign: 'center' },
+        alternateRowStyles:{ fillColor: [248,248,255] },
+        columnStyles:      { 0: { fontStyle: 'bold' } },
+        margin:            { left: 14, right: 14 },
       });
 
       const total_pages = doc.internal.getNumberOfPages();

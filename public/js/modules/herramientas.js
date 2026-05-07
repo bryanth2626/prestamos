@@ -2,6 +2,7 @@
 
 const Herramientasmodule = {
   herramientas: [],
+  _viendoId: null,
 
   async init() {
      this._bindEvents();
@@ -117,25 +118,29 @@ const Herramientasmodule = {
 
         <td>
           <button
+            class="btn-action btn-action-view"
+            onclick="Herramientasmodule.verDetalle(${h.id})"
+            title="Ver detalle">
+            <i class="bi bi-eye-fill"></i>
+          </button>
+          <button
             class="btn-action btn-action-edit"
             onclick="Herramientasmodule.openEdit(${h.id})"
             title="Editar">
             <i class="bi bi-pencil-fill"></i>
           </button>
-
           <button
             class="btn-action btn-action-delete"
             onclick="Herramientasmodule.eliminar(${h.id}, '${escapeHtml(h.nombre)}')"
             title="Eliminar">
             <i class="bi bi-trash3-fill"></i>
           </button>
-          <button 
+          <button
             class="btn-action btn-action-chart"
             onclick="GraficosModule._verGraficoRapido('herramientas')"
             title="Ver gráfico">
             <i class="bi bi-bar-chart-fill"></i>
           </button>
-
         </td>
       </tr>
     `).join('');
@@ -253,6 +258,61 @@ const Herramientasmodule = {
 
     this._openModal('edit', herramienta);
   },
+  verDetalle(id) {
+  const h = this.herramientas.find(x => x.id === id);
+  if (!h) return;
+  this._viendoId = id;
+
+  document.getElementById('detalleHerramientaBody').innerHTML = `
+    <div class="row g-3">
+      <div class="col-12">
+        <label class="form-label-custom">Nombre</label>
+        <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${escapeHtml(h.nombre)}</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label-custom">Marca</label>
+        <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${escapeHtml(h.marca || '—')}</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label-custom">Modelo</label>
+        <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${escapeHtml(h.modelo || '—')}</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label-custom">Código</label>
+        <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${escapeHtml(h.codigo || '—')}</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label-custom">N° Serie</label>
+        <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${escapeHtml(h.numero_serie || '—')}</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label-custom">Categoría</label>
+        <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${escapeHtml(h.nombre_categoria || '—')}</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label-custom">Proveedor</label>
+        <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${escapeHtml(h.nombre_proveedor || '—')}</div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label-custom">Precio compra</label>
+        <div class="input-custom" style="background:var(--bg-secondary);cursor:default">S/ ${formatPrecio(h.precio_compra)}</div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label-custom">Stock</label>
+        <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${h.stock ?? '—'}</div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label-custom">Estado</label>
+        <div class="input-custom" style="background:var(--bg-secondary);cursor:default">${this._estadoBadge(h.estado)}</div>
+      </div>
+      <div class="col-12">
+        <label class="form-label-custom">Descripción</label>
+        <div class="input-custom" style="background:var(--bg-secondary);cursor:default;min-height:60px">${escapeHtml(h.descripcion || '—')}</div>
+      </div>
+    </div>`;
+
+  openOverlay('modalDetalleHerramienta');
+},
 
   async _save() {
     const id = document.getElementById('herramientaId').value;
@@ -381,6 +441,9 @@ const Herramientasmodule = {
 
     document.getElementById('btnCloseModalHerramienta')
       ?.addEventListener('click', () => closeOverlay('modalHerramienta'));
+    document.getElementById('modalDetalleHerramienta')?.addEventListener('click', e => {
+      if (e.target.id === 'modalDetalleHerramienta') closeOverlay('modalDetalleHerramienta');
+    });  
 
     document.getElementById('modalHerramienta')
       ?.addEventListener('click', e => {
