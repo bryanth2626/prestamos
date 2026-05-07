@@ -16,6 +16,9 @@
   <button class="btn-icon-outline" id="btnRefreshProveedores" title="Recargar">
     <i class="bi bi-arrow-clockwise"></i>
   </button>
+  <button class="btn-icon-outline" id="btnExportarPdfProveedores" title="Exportar PDF">
+    <i class="bi bi-file-earmark-pdf-fill" style="color:#ef4444"></i>
+  </button>
 </div>
 
 <div class="card-panel">
@@ -150,6 +153,60 @@
             <span id="btnGuardarProveedorSpinner" class="d-none">
               <span class="spinner-sm"></span>
             </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-overlay" id="modalPdfProveedor">
+      <div class="modal-panel" style="max-width:780px; width:95%; max-height:90vh; overflow-y:auto;">
+        <div class="modal-header-custom">
+          <div>
+            <div class="modal-title-custom">Exportar PDF — Proveedores</div>
+            <div class="modal-subtitle">Configura qué columnas aparecerán en el reporte</div>
+          </div>
+          <button class="btn-modal-close" onclick="closeOverlay('modalPdfProveedor')">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="modal-body-custom">
+          <div style="margin-bottom:18px;">
+            <p class="form-label-custom" style="margin-bottom:10px;">
+              <i class="bi bi-sliders me-1"></i> Columnas a incluir
+            </p>
+            <div style="display:flex; flex-wrap:wrap; gap:10px;" id="pdfColumnasProvs">
+              <label class="pdf-col-toggle"><input type="checkbox" value="nombre_comercial" checked> Nombre</label>
+              <label class="pdf-col-toggle"><input type="checkbox" value="contacto"         checked> Contacto</label>
+              <label class="pdf-col-toggle"><input type="checkbox" value="telefono"         checked> Teléfono</label>
+              <label class="pdf-col-toggle"><input type="checkbox" value="email"            checked> Email</label>
+              <label class="pdf-col-toggle"><input type="checkbox" value="direccion"              > Dirección</label>
+            </div>
+          </div>
+          <div style="margin-bottom:18px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+            <div>
+              <label class="form-label-custom">Título del reporte</label>
+              <input type="text" id="pdfTituloProvs" class="input-custom" value="Reporte de Proveedores"
+                    style="min-width:220px;" placeholder="Título personalizado…"/>
+            </div>
+          </div>
+          <div style="border:1px solid var(--border); border-radius:8px; overflow:hidden;">
+            <div style="background:var(--bg-secondary); padding:8px 14px; font-size:12px; color:var(--text-muted);">
+              <i class="bi bi-eye me-1"></i> Vista previa (primeras 5 filas)
+            </div>
+            <div style="overflow-x:auto; max-height:260px; overflow-y:auto;">
+              <table class="table-custom" style="font-size:12px;">
+                <thead id="pdfPreviewHeadProvs"></thead>
+                <tbody id="pdfPreviewBodyProvs"></tbody>
+              </table>
+            </div>
+          </div>
+          <div id="pdfKpisProvs" style="display:flex; gap:14px; flex-wrap:wrap; margin-top:16px;"></div>
+        </div>
+        <div class="modal-footer-custom">
+          <button class="btn-cancel" onclick="closeOverlay('modalPdfProveedor')">Cancelar</button>
+          <button class="btn-save" id="btnGenerarPdfProvs" onclick="ProveedoresModule.generarPdf()">
+            <span id="btnGenerarPdfProvsText"><i class="bi bi-file-earmark-pdf-fill me-1"></i> Generar PDF</span>
+            <span id="btnGenerarPdfProvsSpinner" class="d-none"><span class="spinner-sm"></span></span>
           </button>
         </div>
       </div>

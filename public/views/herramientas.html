@@ -23,6 +23,9 @@
   <button class="btn-icon-outline" id="btnRefreshHerramientas" title="Recargar">
     <i class="bi bi-arrow-clockwise"></i>
   </button>
+  <button class="btn-icon-outline" id="btnExportarPdfHerramientas" title="Exportar PDF">
+    <i class="bi bi-file-earmark-pdf-fill" style="color:#ef4444"></i>
+  </button>
 </div>
 
 <div class="card-panel">
@@ -235,5 +238,72 @@
       </button>
     </div>
 
+  </div>
+</div>
+<div class="modal-overlay" id="modalPdfHerramienta">
+  <div class="modal-panel" style="max-width:780px; width:95%; max-height:90vh; overflow-y:auto;">
+    <div class="modal-header-custom">
+      <div>
+        <div class="modal-title-custom">Exportar PDF — Herramientas</div>
+        <div class="modal-subtitle">Configura qué columnas aparecerán en el reporte</div>
+      </div>
+      <button class="btn-modal-close" onclick="closeOverlay('modalPdfHerramienta')">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="modal-body-custom">
+      <div style="margin-bottom:18px;">
+        <p class="form-label-custom" style="margin-bottom:10px;">
+          <i class="bi bi-sliders me-1"></i> Columnas a incluir
+        </p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px;" id="pdfColumnasHerr">
+          <label class="pdf-col-toggle"><input type="checkbox" value="nombre"           checked> Nombre</label>
+          <label class="pdf-col-toggle"><input type="checkbox" value="marca"            checked> Marca</label>
+          <label class="pdf-col-toggle"><input type="checkbox" value="modelo"           checked> Modelo</label>
+          <label class="pdf-col-toggle"><input type="checkbox" value="codigo"           checked> Código</label>
+          <label class="pdf-col-toggle"><input type="checkbox" value="nombre_categoria" checked> Categoría</label>
+          <label class="pdf-col-toggle"><input type="checkbox" value="nombre_proveedor" checked> Proveedor</label>
+          <label class="pdf-col-toggle"><input type="checkbox" value="precio_compra"          > Precio</label>
+          <label class="pdf-col-toggle"><input type="checkbox" value="stock"            checked> Stock</label>
+          <label class="pdf-col-toggle"><input type="checkbox" value="estado"           checked> Estado</label>
+        </div>
+      </div>
+      <div style="margin-bottom:18px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <div>
+          <label class="form-label-custom">Filtrar por estado</label>
+          <select id="pdfFiltroEstadoHerr" class="input-custom" style="min-width:160px;">
+            <option value="">Todos</option>
+            <option value="disponible">Disponible</option>
+            <option value="prestada">Prestada</option>
+            <option value="mantenimiento">Mantenimiento</option>
+            <option value="baja">Baja</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label-custom">Título del reporte</label>
+          <input type="text" id="pdfTituloHerr" class="input-custom" value="Reporte de Herramientas"
+                 style="min-width:220px;" placeholder="Título personalizado…"/>
+        </div>
+      </div>
+      <div style="border:1px solid var(--border); border-radius:8px; overflow:hidden;">
+        <div style="background:var(--bg-secondary); padding:8px 14px; font-size:12px; color:var(--text-muted);">
+          <i class="bi bi-eye me-1"></i> Vista previa (primeras 5 filas)
+        </div>
+        <div style="overflow-x:auto; max-height:260px; overflow-y:auto;">
+          <table class="table-custom" style="font-size:12px;">
+            <thead id="pdfPreviewHeadHerr"></thead>
+            <tbody id="pdfPreviewBodyHerr"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="pdfKpisHerr" style="display:flex; gap:14px; flex-wrap:wrap; margin-top:16px;"></div>
+    </div>
+    <div class="modal-footer-custom">
+      <button class="btn-cancel" onclick="closeOverlay('modalPdfHerramienta')">Cancelar</button>
+      <button class="btn-save" id="btnGenerarPdfHerr" onclick="HerramientasModule.generarPdf()">
+        <span id="btnGenerarPdfHerrText"><i class="bi bi-file-earmark-pdf-fill me-1"></i> Generar PDF</span>
+        <span id="btnGenerarPdfHerrSpinner" class="d-none"><span class="spinner-sm"></span></span>
+      </button>
+    </div>
   </div>
 </div>
