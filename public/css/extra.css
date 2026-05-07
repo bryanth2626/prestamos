@@ -87,3 +87,24 @@
 .w-100 { width: 100%; }
 .mt-3 { margin-top: 16px; }
 .d-none { display: none !important; }
+/* PDF Column toggles */
+.pdf-col-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  user-select: none;
+  background: var(--bg-secondary);
+  color: var(--text);
+}
+.pdf-col-toggle:has(input:checked) {
+  border-color: var(--primary);
+  background: rgba(99,102,241,0.1);
+  color: var(--primary);
+}
+.pdf-col-toggle input { display: none; }
