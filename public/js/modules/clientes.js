@@ -148,6 +148,7 @@ const ClientesModule = {
     clearErrors(['cliNombre','cliDni']);
     let ok = true;
     if (!nombre) { setError('cliNombre','err-cliNombre','El nombre es requerido'); ok = false; }
+    if (!dni)    { setError('cliDni','err-cliDni','El DNI es requerido'); ok = false; }  // ← nueva
     if (!ok) return;
 
     setLoading('btnGuardarCliente','btnGuardarClienteText','btnGuardarClienteSpinner', true);

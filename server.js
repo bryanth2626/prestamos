@@ -25,6 +25,7 @@ app.use('/api/clientes', require('./routes/clientes.js'));
 app.use('/api/herramientas', require('./routes/herramientas'));
 app.use('/api/prestamos', require('./routes/prestamos'));
 app.use('/api/devoluciones', require('./routes/devoluciones'));
+app.use('/api/categorias', require('./routes/categorias'));
 
 
 app.use('/api/proveedores', require('./routes/proveedores')); 
